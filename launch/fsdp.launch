@@ -1,0 +1,30 @@
+<launch>
+    <arg name="launch_state_machine" default="true"/>
+    <arg name="launch_gp" default="true"/>
+    <arg name="launch_waypoint_updater" default="true"/>
+
+    <group if="$(arg launch_state_machine)">
+        <node pkg="state_machine" type="dynamic_statemachine_server.py" name="dynamic_statemachine_server" output="screen"/>
+        <node pkg="state_machine" type="state_machine_node.py" name="state_machine" output="screen">
+            <rosparam file="$(find stack_master)/config/state_machine_params.yaml"/>
+            <param name="timetrials_only" value="False"/>
+            <param name="ot_planner" value="predictive_spliner"/>
+        </node>
+    </group>
+
+    <node pkg="fsdp" type="dynamic_collision_server.py" name="dynamic_collision_tuner_node" output="screen"/>
+    <node pkg="fsdp" type="collision_prediction.py" name="collision_predictor" output="screen"/>
+
+    <node pkg="fsdp" type="dynamic_sqp_server.py" name="dynamic_sqp_tuner_node" output="screen"/>
+    <node pkg="fsdp" type="sqp_avoidance_node.py" name="planner_sqp" output="screen"/>
+
+    <group if="$(arg launch_waypoint_updater)">
+        <node pkg="fsdp" type="update_waypoints.py" name="waypoint_updater" output="screen"/>
+    </group>
+
+    <group if="$(arg launch_gp)">
+        <node pkg="fsdp" type="opponent_trajectory.py" name="OpponentHalflap" output="screen"/>
+        <node pkg="fsdp" type="gaussian_process_opp_traj.py" name="GP_trajectory" output="screen" launch-prefix="taskset -c 1"/>
+        <node pkg="fsdp" type="predictor_opponent_trajectory.py" name="Predictor_Opp" output="screen"/>
+    </group>
+</launch>

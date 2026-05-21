@@ -46,14 +46,14 @@ This repository contains only the FSDP planner package. Install the base race st
 [ForzaETH/race_stack](https://github.com/ForzaETH/race_stack), then clone this repository into the `planner/` folder:
 
 ```bash
-cd /home/ddrx/ddrx_ws/src/ddrx-race-stack/planner
+cd <race_stack_repo>/planner
 git clone git@github.com:ZJU-DDRX/FSDP.git fsdp
 ```
 
 ## Build
 
 ```bash
-cd /home/ddrx/ddrx_ws
+cd <race_stack_ws>
 catkin build fsdp
 ```
 
@@ -72,7 +72,7 @@ If you clone this stack again, keep submodules enabled. The GP node depends on t
 
 ```bash
 git submodule update --init --recursive
-pip install ~/ddrx_ws/src/ddrx-race-stack/f110_utils/libs/ccma
+pip install <race_stack_repo>/f110_utils/libs/ccma
 ```
 
 ## Quick Start
@@ -80,7 +80,7 @@ pip install ~/ddrx_ws/src/ddrx-race-stack/f110_utils/libs/ccma
 Start the base simulator:
 
 ```bash
-cd /home/ddrx/ddrx_ws
+cd <race_stack_ws>
 roslaunch stack_master base_system.launch sim:=True racecar_version:=SIM map_name:=f rviz:=false
 ```
 

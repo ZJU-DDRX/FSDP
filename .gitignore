@@ -1,0 +1,8 @@
+build/
+*.egg-info/
+src/mpc_builder*.so
+data/
+debug/
+*.xlsx
+__pycache__/
+*.py[cod]

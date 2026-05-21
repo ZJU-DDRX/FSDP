@@ -10,7 +10,7 @@
   <img alt="Bi-level QP" src="https://img.shields.io/badge/Bi--level%20QP-Control-F59E0B">
 </p>
 
-`fsdp` is the ROS package implementation of
+`fsdp` is the DDRX implementation of
 [FSDP: Fast and Safe Data-Driven Overtaking Trajectory Planning for Head-to-Head Autonomous Racing Competitions](https://arxiv.org/abs/2503.06075).
 It uses sparse Gaussian Process opponent prediction, collision-risk checking, and a bi-level QP planning pipeline: polynomial fitting produces a rough overtaking trajectory, then a Frenet-frame MPC QP refines it with kinematic and safety constraints.
 
@@ -31,7 +31,7 @@ It uses sparse Gaussian Process opponent prediction, collision-risk checking, an
 
 ## Package Layout
 
-- `launch/fsdp.launch`: package-level launch file for the FSDP planning pipeline.
+- `launch/fsdp.launch`: package-level launch file, mirroring the `ddrx_spliner_multi` workflow.
 - `src/sqp/`: main FSDP overtaking planner nodes; `sqp` is the legacy folder and node naming.
 - `src/soc/`: collision prediction and dynamic collision tuning.
 - `src/gp/`: opponent trajectory projection and GP prediction nodes.
@@ -43,7 +43,7 @@ It uses sparse Gaussian Process opponent prediction, collision-risk checking, an
 ## Build
 
 ```bash
-cd ~/catkin_ws
+cd /home/ddrx/ddrx_ws
 catkin build fsdp
 ```
 
@@ -58,11 +58,11 @@ print("fsdp imports OK:", mpc_builder.__file__)
 PY
 ```
 
-When installing this package with the original race stack, keep the race stack submodules enabled. The GP node depends on the local `ccma` package:
+If you clone this stack again, keep submodules enabled. The GP node depends on the local `ccma` package:
 
 ```bash
 git submodule update --init --recursive
-pip install /path/to/race-stack/f110_utils/libs/ccma
+pip install ~/ddrx_ws/src/ddrx-race-stack/f110_utils/libs/ccma
 ```
 
 ## Quick Start
@@ -70,14 +70,14 @@ pip install /path/to/race-stack/f110_utils/libs/ccma
 Start the base simulator:
 
 ```bash
-cd ~/catkin_ws
+cd /home/ddrx/ddrx_ws
 roslaunch stack_master base_system.launch sim:=True racecar_version:=SIM map_name:=f rviz:=false
 ```
 
-In a second terminal, launch the FSDP planner nodes:
+In a second terminal, launch head-to-head with the FSDP planner:
 
 ```bash
-roslaunch fsdp fsdp.launch
+roslaunch stack_master headtohead.launch perception:=False planner:=fsdp
 ```
 
 In a third terminal, publish a simulated opponent obstacle:
@@ -136,7 +136,7 @@ RViz markers:
 - `launch_gp:=true` starts the full opponent prediction chain and requires `ccma`, `torch`, `gpytorch`, `scikit-learn`, and `pandas`.
 - The planner waits for `/global_waypoints`, `/global_waypoints_updated`, and obstacle topics, so a direct package launch without the base stack may appear idle.
 - Generated build products under `build/`, `src/mpc_builder*.so`, debug data, and spreadsheet outputs are ignored by `.gitignore`.
-- In a stack-level launch file, include `launch/fsdp.launch` or map the stack planner option to `planner:=fsdp`.
+- `stack_master/launch/headtohead.launch` includes this package launch when `planner:=fsdp`.
 
 ## Citation
 

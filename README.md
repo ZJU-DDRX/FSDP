@@ -92,24 +92,6 @@ Open `rqt_reconfigure` and enable the overtaking sectors if the state machine is
 rqt_reconfigure
 ```
 
-## Direct Launch
-
-You can also launch only the package nodes:
-
-```bash
-roslaunch fsdp fsdp.launch
-```
-
-Useful launch args:
-
-```bash
-roslaunch fsdp fsdp.launch launch_state_machine:=false
-roslaunch fsdp fsdp.launch launch_gp:=false
-roslaunch fsdp fsdp.launch launch_waypoint_updater:=false
-```
-
-This is handy for smoke tests or when another launch file already starts the state machine.
-
 ## What To Watch
 
 These topics are the fastest way to confirm the pipeline is alive:

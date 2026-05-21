@@ -40,6 +40,16 @@ It uses sparse Gaussian Process opponent prediction, collision-risk checking, an
 - `src/mpc/`: vehicle model, MPC controllers, and pybind11 C++ extension.
 - `cfg/*.cfg`: dynamic reconfigure parameters for collision prediction and SQP tuning.
 
+## Installation
+
+This repository contains only the FSDP planner package. Install the base race stack first by following
+[ForzaETH/race_stack](https://github.com/ForzaETH/race_stack), then clone this repository into the `planner/` folder:
+
+```bash
+cd /home/ddrx/ddrx_ws/src/ddrx-race-stack/planner
+git clone git@github.com:ZJU-DDRX/FSDP.git fsdp
+```
+
 ## Build
 
 ```bash
